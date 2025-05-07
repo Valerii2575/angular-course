@@ -70,3 +70,231 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
 
 ```
+
+## Introduction to TypeScript
+
+- Variable declaretion
+- Function parameters
+- Optional chaining
+- Nullish coalescing
+- Classes
+- Modules
+
+### Variable parameters
+
+When we wants to combine variables, we can use the **spread parameter** syntax, uses the ellipsis **(...)**
+
+```
+const category = 'Computing';
+const categories = ['Gaming', 'Multimedia'];
+const productCategories = [...categories, category];
+```
+
+### Function parameters
+
+Functions in JavaScript are the processing machines we use to analyze input, digest information, and apply the neccessary transformations to data.
+
+```
+function addToCard(productId, quantity = 1){
+    const product = {
+        id: productId,
+        qty: quantity
+    };
+}
+```
+
+### Nullish coalescing
+
+Nullish coalescing is related to providing a default value when a variable is not set.
+
+```
+const quantity = qty ?? 1;
+```
+
+Its helps us make our code readable and smaller.
+
+### Classes
+
+Classes allow as to structure our application code and create instances of each class.
+A class can have property members, a constructor, methods, and property accessors.
+
+```
+class User {
+    firstName = '';
+    lastName = '';
+    #isActive = false;
+
+    costructor(firstName, lastName, isActive = true){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.#isActive = isActive;
+    }
+
+    getFullname(){
+        return `${this.firstName} {this.lastName}`;
+    }
+
+    get active(){
+        return this.#isActive;
+    }
+}
+```
+
+A class can also extend members and functionality of other classes appending the extends keyword.
+
+### Modules
+
+Modules allow us to separate our application code into single files, enforsing the Single Responsibility Pattern.
+Each file is a different module concerned wich a specific feature or functionality.
+
+### Getting start with TypeScript
+
+The TypeScript language is an npm package that can be installed from the npm registry
+
+** npm install -g typescript **
+
+Command ** tsc app.ts ** to compile the TypeScript file into JavaScript
+The transpilation process will create an app.js file in the same folder.
+
+Types of TypeScript:
+
+- String 
+    ````
+        const product: string = 'Keyboard' 
+    ```
+
+- Boolean 
+    ``` 
+        const isactive : boolean = true 
+    ```
+
+- Number 
+    ``` 
+        const price: number = 100 
+    ```
+
+- Array 
+    ```
+        const categories : string[] = ['Computing', 'Multimedia'];
+        const categories : Array<string> = ['Computing', 'Multimedia'];
+    ```
+
+- any
+    ```
+        let order : any;
+        function setOrderNo(){
+            order = '0001';
+        }
+    ```
+
+- Custom type
+    Custom type are an excellent way to add types with a finite number of allowed values
+
+    ```
+    type Category = {
+        computing : string,
+        multimedia: string
+    }
+    ```
+- Functions
+- Classes
+    ```
+        export class User {
+            firstName : string = '';
+            lastName : string = '';
+            private isActive : boolean = false;
+
+            costructor(firstName: string, lastName: string, isActive: boolean = true){
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.isActive = isActive;
+            }
+
+            getFullname(): string{
+                return `${this.firstName} {this.lastName}`;
+            }
+
+            get active(): boolean{
+                return this.isActive;
+            }
+        }
+    ```
+    Another great feature is related to classes is the *instanceOff* keyword.
+
+    ```
+        class Customer etends User {
+            taxNumber: number;
+
+            constructor(firstName: string, lastName: string){
+                super(firstName, lastName);
+            }
+        }
+
+        Create object outside of the class that can be of both the User and Customer type:
+
+        const account: User | Customer = undefined;
+
+        if(account instanceOff Customer){
+            const taxNo = account.taxNumber;
+        } 
+        else {
+            const name = account.getFullName();
+        }
+    ```
+    TypeScript classes help us write well-structured code, can be instantiated,  
+    contain business logic, and provide static typing in our application.
+
+- Interfaces
+    An interface is a code contract that defines a particular schema.
+
+    ```
+        interface Product {
+            name: string;
+            price: number;
+            getCategories: () => string[];
+        }
+    
+        class Keyboard implements Product{
+            .....
+        }
+    ```
+    We can also use interfaces to change type of a variable from one type to another, called type casting.
+    ```
+        const product = {
+            name: 'Keyboard',
+            price: 20
+        } as Product;
+    ```
+
+- Generics
+    Generics are used when we want to use dynnamic types in other TypeScript artifacts, such as methods.
+
+    ```
+        function save<T>(data: T){
+            localStorage.setItem('Product', Json.stringify(data));
+        }
+
+        save<Product>({
+            name: 'Microphone',
+            price: 20,
+            getCategories: () => ['Peripherals', 'Multimedia']
+        });
+    ```
+    Generics are often used in collections becouse they have similar behavior, regardless of the type.
+
+- Utility types
+
+    Utility types are types that help us to derive new types from existing ones.
+    The Partial type is used when we want to create an object from an interface where all its
+    properties are optional.
+
+    ```
+        const mic: Partial<Poduct> = {
+            name: 'Microphone',
+            price: 67
+        };
+    ```
+
+
+
+
