@@ -295,6 +295,214 @@ Types of TypeScript:
         };
     ```
 
+## Components
+
+Components are the basic building blocks of an Angular application.
+They control different web page parts called views.
+They are responsible for the presentational logic of an app, and they
+are organized in a hierarhical tree of components that can interact with each other.
+
+Structure of an Angular component
+
+```
+    import { Component } from '@angular/core';
+    import { RouterOutlet } from '@angular/router';
+
+    @Component({
+        selector: 'app-root',
+        imports: [RouterOutlet],
+        templateUrl: './app.component.html',
+        styleUrl: './app.component.css'
+    })
+
+    export class AppComponent{
+        title = 'World';
+    }
+```
+- selector - a css selector that instructs Angular to load the component 
+            in the location that finds the corresponding tag in an HTML template.
+- imports - defines a list of Angular artifacts that the component needs to be loaded correctly,
+            such as other Angular components,
+- templateUrl - defines the part of an external HTML file that contains the HTML template,
+- styleUrl - defines the part of an external CSS file that contains the HTML template.
+
+Creating Component
+
+```
+    ng generate component product-list
+    ng g c product-list                
+    ng g c product-list --skip-tests    - without tests
+```
+
+Displaying data from the component class
+
+```
+    <h1 [innerText]="title"></h1>
+    <h2>{{ title }}</h2>
+    <p [attr.aria-label]="myText"></p>
+```
+
+To set the attribute of an HTML element, we can use the *attr.*
+syntax through property building followed by the attribute name.
+
+Create Interface
+
+```
+    ng generate interface [name]
+```
+
+### Styling the component
+
+Styles in a web component can be use be applied using either the class or style attribute:
+
+```
+    <p class="star"></p>
+    <p style="color: green"></p>
+```
+
+We can apply a single class to an HTML
+```
+    <p [class.color]="'star'"></p>
+    <p [style.width.pd]="100"></p>
+    <p [style]="currentStyles"></p>
+
+    @Component ....
+    currentStyles = {
+        color: 'green',
+        width: '100'
+    };
+```
+
+### Passing data using an input binding
+
+Create a new component that will display the details of the selected product
+
+''''
+export class ProductDetailComponent {
+  @Input() product : Product | undefined
+
+}
+ProductDetailComponent.html
+<p>{{product?.id}} - {{product?.title}}</p>
+
+in ProductListComponent.html
+<li *ngFor="let product of products;">
+    <app-product-detail [product]="product"></app-product-detail>
+</li>
+
+'''
+
+### Passing data using an output binding
 
 
+### Component lifecycle
+
+- ngOnInit  - this is called when a component is initialized
+- ngOnDestroy - this is called when a component is destroyed
+- ngOnChanges - this is called when values of input binding properties in the component change
+     ```
+    ngOnChanges(changes: SimpleChanges): void {
+        const product = changes['product'];
+        const oldValue = product.previousValue;
+        const newValue = product.currentValue;
+    }
+    ```
+- ngAfterViewInit - this is called when Angular initializes the view of the current component 
+                    and its chiled components
+   ````
+    productDetail = viewChild(ProductDetailComponent);
+   ```
+
+## Pipes
+
+Pipes allow us to transform the outcom of our expressions at the view level.
+They take data as input, transform  it into the desired, and display the output in the template.
+
+The syntax of a pipe consist of the pape name following the expression we want to transform
+``
+  expression | pipe   or   expression | pipe:param
+
+  <p>{{product()!.price | currency:'EUR'}}</p>
+```
+
+Angular has a wide range of built-in pipe types already baked into it
+- upercase/lowercase
+- percent
+- date
+- currency
+- json
+- keyvalue
+- slice
+- async
+
+> The slice pipe transform immutable data. The transformed list is always a copy of the original data. 
+
+To create new pipe:
+```
+    ng generate pipe [name of pipe]
+```
+
+This command will generate all necessary files of the pipe inside the folder
+where we run the command
+```
+    ng generate pipe sort
+
+    result:
+
+    import { Pipe, PipeTransaform} from '@angular/core';
+
+    @Pipe({
+        name: 'sort'
+    })
+
+    export class SortPipe implememnts PipeTransform {
+
+        transform(value: unknown, ...args: unknown[]): unknown {
+            return null;
+        }
+    }
+```
+@Pipe - decorator that defines the name.
+transform - is method of the PipeTransform interface and accept two parameters:
+- value - the input data that we want to transform
+- args - an optional list of arguments we can provide to the transformation method
+
+The ** CommonModule ** class exports the Angular build-in-pipes.
+An Angular component must import CommonModule before using build-in-pipe in the component template.
+
+## Directives
+
+Angular directives are HTML attributes that extend the behavior or the appearence of astandard HTML element.
+When we apply a directive to an HTML element or event an Anguar component, 
+we can add custom behavior or alter its appearance. 
+There are three type of directives:
+- Components: Components are directives that contain an associated HTML template.
+- Structural directives: These add or remove elements from the DOM.
+- Attribute directives: These modify the appearance of a DOM element or dafine a custom behavior.
+
+Custom directives allow us to attach advanced behaviors to elements in the DOM or modify their appearance.
+
+for generate directives need to use next command
+
+```
+ng generate directive [name]
+ng generate directive [name] --skip-tests
+```
+
+The @Derective is an Angular decorator that defines the properties of the Angular directive.
+It is a CSS selector that instructs Angular to load directive in the location that finds the
+corresponding attribute in an HTML template. The Angular CLI adds the app prefix by default, 
+but we can customize it using the --prefix option.
+
+For using createddirective to add copiright information to our app:
+- open style.css and add CSS styles
+- open our directive file and import the ElementRef class.
+    The nativeElement propery contains the actual native HTML element.
+- open app component file and import the CopyrightDirective class
+
+Attribute directives are also concerned with the behavior of an HTML element.
+the Angular framework provides two helpfull decorators:
+
+- @HostBinding. This binds a value to the propety of th native host element.
+- @HostListener. This binds to an event of the native host element.
 
