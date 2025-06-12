@@ -1,0 +1,27 @@
+<div class="container">
+  <h1 [innerText]="title"></h1>
+<h2>{{ title }}</h2>
+<h2 *ngIf="products.length > 0">Products {{ products.length }}</h2>
+<h2 *ngIf="products.length == 0">Products not found</h2>
+<ul class="pill-groups">
+  <li *ngFor="let product of products | sort:'price';">
+    <app-product-detail [product]="product"></app-product-detail>
+  </li>
+</ul>
+
+<hr>
+<h2>
+  Attribute directive that reject non-numeric values by the keyboard
+</h2>
+<ul>
+  <li>Enter command - nd g directive numeric
+  </li>
+  <li>
+    Import two decorators HostBinding and HostListener
+  </li>
+  <li>
+    Define a currentClass property using HostBinding
+    <strong>"HostBinding(class) currentClass= ''"</strong>
+  </li>
+</ul>
+</div>
